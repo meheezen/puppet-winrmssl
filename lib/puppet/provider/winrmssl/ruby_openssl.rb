@@ -38,7 +38,7 @@ Puppet::Type.type(:winrmssl).provide(:ruby_openssl) do
 
     if var_stdout_raw.empty?
       var_thumbprint = ''
-      raise Puppet::ResourceError, "Could not find a valid certificate for '#{Facter['fqdn'].value}' issued by '#{issuer_subject}'."
+      raise Puppet::ResourceError, "Could not find a valid certificate for '#{Facter['dns_fqdn'].value}' issued by '#{issuer_subject}'."
     else
       var_thumbprint = var_stdout_raw
     end
@@ -236,7 +236,7 @@ Puppet::Type.type(:winrmssl).provide(:ruby_openssl) do
 
     var_thumbprint = _thumbprint
 
-    var_cmd = "winrm create winrm/config/listener?Address=*+Transport=HTTPS @{Hostname=\"#{Facter['fqdn'].value}\";CertificateThumbprint=\"#{var_thumbprint}\";Port=\"#{@resource[:port]}\"}"
+    var_cmd = "winrm create winrm/config/listener?Address=*+Transport=HTTPS @{Hostname=\"#{Facter['dns_fqdn'].value}\";CertificateThumbprint=\"#{var_thumbprint}\";Port=\"#{@resource[:port]}\"}"
     _, exitstatus = exec_call(var_cmd)
     exitstatus
   end
